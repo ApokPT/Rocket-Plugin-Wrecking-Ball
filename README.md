@@ -15,6 +15,7 @@ Command | Action
 
 
 ## Available Filters
+Filter | Element
 ------- | -------
 b				| Bed
 t				| Trap
