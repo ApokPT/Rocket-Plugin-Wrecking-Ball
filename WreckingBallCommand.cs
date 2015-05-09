@@ -8,8 +8,10 @@ namespace ApokPT.RocketPlugins
     class WreckingBallCommand : IRocketCommand
     {
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] cmd)
         {
+
+            string command = String.Join(" ", cmd);
 
             if (!caller.IsAdmin && !WreckingBall.Instance.Configuration.Enabled) return;
 
