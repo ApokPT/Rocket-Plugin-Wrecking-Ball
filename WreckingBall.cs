@@ -1,5 +1,6 @@
-﻿using Rocket.Logging;
-using Rocket.RocketAPI;
+﻿using Rocket.Unturned;
+using Rocket.Unturned.Player;
+using Rocket.Unturned.Plugins;
 using SDG;
 using System;
 using System.Collections.Generic;
@@ -52,7 +53,7 @@ namespace ApokPT.RocketPlugins
             {
                 if (processing)
                 {
-                    RocketChatManager.Say(player, Translate("wreckingball_progress", (destroyList.Count - dIdx), (Math.Ceiling((double)(destroyList.Count * delSpeed) / 1000))));
+                    RocketChat.Say(player, Translate("wreckingball_progress", (destroyList.Count - dIdx), (Math.Ceiling((double)(destroyList.Count * delSpeed) / 1000))));
                     return;
                 }
                 Abort();
@@ -121,7 +122,7 @@ namespace ApokPT.RocketPlugins
                     }
                 }
             }
-            
+
             if (Filter.Contains('z'))
             {
                 for (int v = 0; v < ZombieManager.ZombieRegions.Length; v++)
@@ -135,19 +136,22 @@ namespace ApokPT.RocketPlugins
                             if (scan)
                                 WreckCategories.Instance.report(9998, (int)distance);
                             else
+                            {
                                 destroyList.Add(new Destructible(zombie.transform, "z", null, zombie));
+                            }
+
                         }
                     }
                 }
             }
-             
+
 
             if (scan) return;
 
             if (destroyList.Count >= 1)
                 Instruct(player);
             else
-                RocketChatManager.Say(player, Translate("wreckingball_not_found", radius));
+                RocketChat.Say(player, Translate("wreckingball_not_found", radius));
         }
 
         internal void Scan(RocketPlayer caller, string filter, uint radius)
@@ -159,11 +163,11 @@ namespace ApokPT.RocketPlugins
                 foreach (KeyValuePair<char, uint> reportFilter in WreckCategories.Instance.reportList)
                     report += " " + WreckCategories.Instance.category[reportFilter.Key].Name + ": " + reportFilter.Value + ",";
                 if (report != "") report = report.Remove(report.Length - 1);
-                RocketChatManager.Say(caller, Translate("wreckingball_scan", radius, report));
+                RocketChat.Say(caller, Translate("wreckingball_scan", radius, report));
             }
             else
             {
-                RocketChatManager.Say(caller, Translate("wreckingball_not_found", radius));
+                RocketChat.Say(caller, Translate("wreckingball_not_found", radius));
             }
 
 
@@ -175,7 +179,7 @@ namespace ApokPT.RocketPlugins
 
             if (SDG.StructureManager.Structures.Count == 0 && BarricadeManager.BarricadeRegions.LongLength == 0)
             {
-                RocketChatManager.Say(caller, Translate("wreckingball_map_clear"));
+                RocketChat.Say(caller, Translate("wreckingball_map_clear"));
                 return;
             }
 
@@ -218,15 +222,15 @@ namespace ApokPT.RocketPlugins
 
         private void Instruct(RocketPlayer caller)
         {
-            RocketChatManager.Say(caller, Translate("wreckingball_queued", destroyList.Count, (Math.Ceiling((double)(destroyList.Count * delSpeed) / 1000))));
-            RocketChatManager.Say(caller, Translate("wreckingball_prompt"));
+            RocketChat.Say(caller, Translate("wreckingball_queued", destroyList.Count, (Math.Ceiling((double)(destroyList.Count * delSpeed) / 1000))));
+            RocketChat.Say(caller, Translate("wreckingball_prompt"));
         }
 
         internal void Confirm(RocketPlayer caller)
         {
             if (destroyList.Count <= 0)
             {
-                RocketChatManager.Say(caller, WreckingBall.Instance.Translate("wreckingball_help"));
+                RocketChat.Say(caller, WreckingBall.Instance.Translate("wreckingball_help"));
             }
             else
             {
@@ -237,7 +241,7 @@ namespace ApokPT.RocketPlugins
                     aTimer.AutoReset = true;
                 }
                 processing = true;
-                RocketChatManager.Say(caller, Translate("wreckingball_initiated", (Math.Ceiling((double)(destroyList.Count * delSpeed) / 1000))));
+                RocketChat.Say(caller, Translate("wreckingball_initiated", (Math.Ceiling((double)(destroyList.Count * delSpeed) / 1000))));
                 dIdx = 0;
                 aTimer.Enabled = true;
             }
@@ -276,8 +280,10 @@ namespace ApokPT.RocketPlugins
                 else if (destroyList[dIdx].Type == "z")
                 {
                     EPlayerKill pKill;
-                    try {
-                        for (int i = 0; i < 100; i++) destroyList[dIdx].Zombie.askDamage(255, destroyList[dIdx].Zombie.transform.up, out pKill); 
+                    try
+                    {
+                        for (int i = 0; i < 100; i++)
+                            destroyList[dIdx].Zombie.askDamage(255, destroyList[dIdx].Zombie.transform.up, out pKill); 
                     }
                     catch { }
                 }
@@ -285,7 +291,7 @@ namespace ApokPT.RocketPlugins
                 dIdx++;
                 if (destroyList.Count == dIdx)
                 {
-                    RocketChatManager.Say(caller, Translate("wreckingball_complete", dIdx));
+                    RocketChat.Say(caller, Translate("wreckingball_complete", dIdx));
                     StructureManager.save();
                     Abort();
                     processing = false;

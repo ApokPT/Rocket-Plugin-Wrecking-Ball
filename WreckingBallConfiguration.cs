@@ -1,13 +1,13 @@
-﻿using Rocket.RocketAPI;
+﻿using Rocket.API;
 
 namespace ApokPT.RocketPlugins
 {
-    public class WreckingBallConfiguration : IRocketConfiguration
+    public class WreckingBallConfiguration : IRocketPluginConfiguration
     {
 
         public bool Enabled;
 
-        public IRocketConfiguration DefaultConfiguration
+        public IRocketPluginConfiguration DefaultConfiguration
         {
             get
             {

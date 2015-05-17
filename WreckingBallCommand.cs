@@ -1,7 +1,7 @@
-﻿using Rocket.Logging;
-using Rocket.RocketAPI;
+﻿using Rocket.Unturned;
+using Rocket.Unturned.Commands;
+using Rocket.Unturned.Player;
 using System;
-using System.Linq;
 
 namespace ApokPT.RocketPlugins
 {
@@ -19,7 +19,7 @@ namespace ApokPT.RocketPlugins
 
             if (String.IsNullOrEmpty(command.Trim()))
             {
-                RocketChatManager.Say(caller, WreckingBall.Instance.Translate("wreckingball_help"));
+                RocketChat.Say(caller, WreckingBall.Instance.Translate("wreckingball_help"));
                 return;
             }
             else
@@ -34,7 +34,7 @@ namespace ApokPT.RocketPlugins
                             WreckingBall.Instance.Confirm(caller);
                             break;
                         case "abort":
-                            RocketChatManager.Say(caller, WreckingBall.Instance.Translate("wreckingball_aborted"));
+                            RocketChat.Say(caller, WreckingBall.Instance.Translate("wreckingball_aborted"));
                             WreckingBall.Instance.Abort();
                             break;
                         case "scan":
@@ -44,7 +44,7 @@ namespace ApokPT.RocketPlugins
                             }
                             else
                             {
-                                RocketChatManager.Say(caller, WreckingBall.Instance.Translate("wreckingball_help_scan"));
+                                RocketChat.Say(caller, WreckingBall.Instance.Translate("wreckingball_help_scan"));
                             }
                             break;
                         case "teleport":
@@ -60,13 +60,13 @@ namespace ApokPT.RocketPlugins
                                         WreckingBall.Instance.Teleport(caller, false);
                                         break;
                                     default:
-                                        RocketChatManager.Say(caller, WreckingBall.Instance.Translate("wreckingball_help_teleport"));
+                                        RocketChat.Say(caller, WreckingBall.Instance.Translate("wreckingball_help_teleport"));
                                         break;
                                 }
                             }
                             else
                             {
-                                RocketChatManager.Say(caller, WreckingBall.Instance.Translate("wreckingball_help_teleport"));
+                                RocketChat.Say(caller, WreckingBall.Instance.Translate("wreckingball_help_teleport"));
                                 break;
                             }
                             break;
@@ -79,7 +79,7 @@ namespace ApokPT.RocketPlugins
                 }
                 else
                 {
-                    RocketChatManager.Say(caller, WreckingBall.Instance.Translate("wreckingball_help"));
+                    RocketChat.Say(caller, WreckingBall.Instance.Translate("wreckingball_help"));
                 }
             }
         }
